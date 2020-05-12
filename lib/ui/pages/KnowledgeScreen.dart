@@ -10,7 +10,9 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("体系"),
+        title: Center(
+          child: Text("体系"),
+        ),
       ),
       body: Center(
         child: Text("体系"),

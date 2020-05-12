@@ -10,7 +10,9 @@ class _SquareScreenState extends State<SquareScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("广场"),
+        title: Center(
+          child: Text("广场"),
+        ),
       ),
       body: Center(
         child: Text("广场"),

@@ -14,11 +14,13 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   final _bottomNavigationColor = Colors.blue;
   int _currentIndex = 0;
 
-  List<Widget> list = List(4);
+  List<Widget> list = List();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //脚手架
+        body: list[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           items: [
             BottomNavigationBarItem(
@@ -28,19 +30,19 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
                       color: _bottomNavigationColor,
                     ))),
             BottomNavigationBarItem(
-                icon: Icon(Icons.home, color: _bottomNavigationColor),
+                icon: Icon(Icons.apps, color: _bottomNavigationColor),
                 title: Text("项目",
                     style: TextStyle(
                       color: _bottomNavigationColor,
                     ))),
             BottomNavigationBarItem(
-                icon: Icon(Icons.home, color: _bottomNavigationColor),
+                icon: Icon(Icons.keyboard_hide, color: _bottomNavigationColor),
                 title: Text("体系",
                     style: TextStyle(
                       color: _bottomNavigationColor,
                     ))),
             BottomNavigationBarItem(
-                icon: Icon(Icons.home, color: _bottomNavigationColor),
+                icon: Icon(Icons.crop_square, color: _bottomNavigationColor),
                 title: Text("广场",
                     style: TextStyle(
                       color: _bottomNavigationColor,
@@ -57,8 +59,11 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
 
   @override
   void initState() {
-    list..add(HomeScreen())..add(ProjectScreen())..add(KnowledgeScreen())..add(
-        SquareScreen());
+    list
+      ..add(HomeScreen())
+      ..add(ProjectScreen())
+      ..add(KnowledgeScreen())
+      ..add(SquareScreen());
     super.initState();
   }
 }
