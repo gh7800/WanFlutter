@@ -5,8 +5,6 @@ import 'package:wanflutter/utils/Config.dart';
 
 void main() => runApp(new MyApp());
 
-var n = 1;
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -15,7 +13,6 @@ class MyApp extends StatelessWidget {
       title: 'Welcome to Flutter',
       home: SplashScreen(),
       debugShowCheckedModeBanner: true,
-
     );
   }
 }

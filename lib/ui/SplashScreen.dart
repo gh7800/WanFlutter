@@ -26,7 +26,6 @@ class SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     _cutDown();
-    print("Splash");
   }
 
   @override
