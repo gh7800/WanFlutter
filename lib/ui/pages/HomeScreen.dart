@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:wanflutter/utils/DioUtil.dart';
 import 'dart:convert';
-import 'package:wanflutter/response/BannerResponse.dart';
-import 'package:wanflutter/response/BaseResponse.dart';
+import '../../model/BannerModel.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -14,12 +13,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   List<Data> listData = new List();
+
   @override
   void initState() {
     getHttp();
-//    List<BannerModel> list;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,11 +33,11 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             new Swiper(
               layout: SwiperLayout.STACK,
-              itemCount: 4,
+              itemCount: listData.length,
               autoplay: true,
               itemBuilder: (BuildContext context,int index){
 //                DateBean dataBean = listData[index];
-                return new Image.network("http://via.placeholder.com/350x150",fit: BoxFit.cover);
+                return new Image.network(listData[index].imagePath,fit: BoxFit.cover);
               },
               itemWidth: 400.0,
               itemHeight: 150.0,
@@ -55,17 +55,13 @@ class _HomeScreenState extends State<HomeScreen> {
       "https://www.wanandroid.com/banner/json",
       onSuccess: (data) {
         Map map = json.decode(data);
+        BannerModel baseModel = BannerModel.fromJson(map);
+        List<Data> list = baseModel.data;
+        print(list.length);
 
-
-//        BannerResponse res = BannerResponse.fromJson(data);
-//        List<Data> list = res.data;
-//        setState(() {
-//          listData = list;
-//        });
-
-        BaseResponse baseResponse = BaseResponse.fromJson(map);
-        print(baseResponse.data);
-
+        setState(() {
+          listData = list;
+        });
       },
       onError: (error) {
         print(error);
