@@ -1,24 +1,19 @@
+import 'package:json_annotation/json_annotation.dart';
+
 /// data : []
 /// errorCode : 0
 /// errorMsg : ""
-
+@JsonSerializable(nullable: false)
 class BaseResponse {
+
   List<dynamic> data;
   int errorCode;
   String errorMsg;
 
-  static BaseResponse fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
-    BaseResponse baseResponseBean = BaseResponse();
-    baseResponseBean.data = map['data'];
-    baseResponseBean.errorCode = map['errorCode'];
-    baseResponseBean.errorMsg = map['errorMsg'];
-    return baseResponseBean;
-  }
+  BaseResponse({this.data, this.errorCode, this.errorMsg});
 
-  Map toJson() => {
-    "data": data,
-    "errorCode": errorCode,
-    "errorMsg": errorMsg,
-  };
+//不同的类使用不同的mixin即可
+  factory BaseResponse.fromJson(Map<String, dynamic> json) => _$BaseResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$BaseResponseToJson(this);
+
 }

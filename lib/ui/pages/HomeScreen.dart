@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:wanflutter/utils/DioUtil.dart';
 import 'dart:convert';
+import 'package:wanflutter/response/BannerResponse.dart';
 import 'package:wanflutter/response/BaseResponse.dart';
-import 'package:wanflutter/model/BannerModel.dart';
+
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -12,9 +13,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  List<Data> listData = new List();
   @override
   void initState() {
     getHttp();
+//    List<BannerModel> list;
     super.initState();
   }
   @override
@@ -33,7 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: 4,
               autoplay: true,
               itemBuilder: (BuildContext context,int index){
-                return new Image.network("http://via.placeholder.com/350x150",fit: BoxFit.fill,);
+//                DateBean dataBean = listData[index];
+                return new Image.network("http://via.placeholder.com/350x150",fit: BoxFit.cover);
               },
               itemWidth: 400.0,
               itemHeight: 150.0,
@@ -51,12 +55,17 @@ class _HomeScreenState extends State<HomeScreen> {
       "https://www.wanandroid.com/banner/json",
       onSuccess: (data) {
         Map map = json.decode(data);
-        BaseResponse response = BaseResponse.fromMap(map);
-        List list = response.data;
 
-        var banner = list.first;
-//        var title = banner.title;
-        print(list.length);
+
+//        BannerResponse res = BannerResponse.fromJson(data);
+//        List<Data> list = res.data;
+//        setState(() {
+//          listData = list;
+//        });
+
+        BaseResponse baseResponse = BaseResponse.fromJson(map);
+        print(baseResponse.data);
+
       },
       onError: (error) {
         print(error);
