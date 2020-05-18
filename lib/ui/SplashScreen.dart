@@ -9,7 +9,7 @@ import 'package:wanflutter/utils/Util.dart';
 /// 闪屏页
 
 ///倒计时
-var n = 3;
+var n = 1;
 
 // ignore: must_be_immutable
 class SplashScreen extends StatefulWidget {

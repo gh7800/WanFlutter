@@ -39,7 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: new Column(
         children: [
-          new Swiper(  ///banner
+          new Swiper(
+            ///banner
             layout: SwiperLayout.STACK,
             itemCount: listData.length,
             autoplay: true,
@@ -48,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return new Image.network(dataBean.imagePath, fit: BoxFit.cover);
             },
             itemWidth: 400.0,
-            itemHeight: 150.0,
+            itemHeight: 180.0,
           ),
           new Expanded(child: _listView())
 //            _listView()
@@ -109,19 +110,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void getArticleData() {
-    FormData formData = FormData.fromMap({'page':page});
-    DioUtils.postHttp(HttpUrl.ArticleUrl,
-    parameters: formData,
-    onSuccess: (data){
-      Map map = json.decode(data);
-      var result = ArticleModel.fromJson(map);
-      print(result);
-    },
-    onError: (error){
-      print(error);
-    });
+    FormData formData = FormData.fromMap({'page': page});
+    DioUtils.request(HttpUrl.ArticleUrl,
+//        parameters: formData,
+        method: DioUtils.GET,
+        onSuccess: (data) {
+          Map map = json.decode(data);
+          ArticleModel result = ArticleModel.fromJson(map);
+          print(result.data.datas);
+        },
+        onError: (error) {
+          print(error);
+        });
   }
-
 }
-
-
