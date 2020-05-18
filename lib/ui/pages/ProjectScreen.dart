@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
-class SquareScreen extends StatefulWidget {
+class ProjectScreen extends StatefulWidget {
   @override
-  _SquareScreenState createState() => _SquareScreenState();
+  _ProjectScreenState createState() => _ProjectScreenState();
 }
 
-class _SquareScreenState extends State<SquareScreen> {
+class _ProjectScreenState extends State<ProjectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Center(
-          child: Text("广场"),
+          child: Text("项目"),
         ),
       ),
       body: Center(
-        child: Text("广场"),
+        child: Text("项目"),
       ),
     );
   }
