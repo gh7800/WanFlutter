@@ -48,11 +48,11 @@ class DioUtils {
     ///定义请求参数
     parameters = parameters ?? {};
     //参数处理
-    parameters.forEach((key, value) {
-      if (url.indexOf(key) != -1) {
-        url = url.replaceAll(':$key', value.toString());
-      }
-    });
+//    parameters.forEach((key, value) {
+//      if (url.indexOf(key) != -1) {
+//        url = url.replaceAll(':$key', value.toString());
+//      }
+//    });
 
     try {
       Response response;
@@ -84,14 +84,14 @@ class DioUtils {
         Function(T t) onSuccess,
         Function(String error) onError}) async {
     parameters = parameters ?? {};
-    method = method ?? 'GET';
+    method = method ?? GET;
 
     /// 请求处理
-    parameters.forEach((key, value) {
-      if (url.indexOf(key) != -1) {
-        url = url.replaceAll(':$key', value.toString());
-      }
-    });
+//    parameters.forEach((key, value) {
+//      if (url.indexOf(key) != -1) {
+//        url = url.replaceAll(':$key', value.toString());
+//      }
+//    });
 
     /// 打印:请求地址-请求方式-请求参数
     print('请求地址：【' + method + '  ' + url + '】');
@@ -129,10 +129,11 @@ class DioUtils {
         receiveTimeout: 15000,
         responseType: ResponseType.plain,
         validateStatus: (status) {
+          print(status);
           // 不使用http状态码判断状态，使用AdapterInterceptor来处理（适用于标准REST风格）
           return true;
         },
-        baseUrl: "http://poetry.huhustory.com/",
+        baseUrl: "https://wanandroid.com/",
       );
 
       dio = new Dio(options);

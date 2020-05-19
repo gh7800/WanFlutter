@@ -9,22 +9,25 @@ import 'package:wanflutter/utils/DioUtil.dart';
 import 'dart:convert';
 import '../../model/BannerModel.dart';
 
+/*
+ * 首页
+ */
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Data> listData = new List();
+  List<Data> _listData = new List();
+  List<Datas> _listArticle = new List();
   var page = 0;
 
-  final _saved = new Set<WordPair>();
   final _biggerFont = const TextStyle(fontSize: 14.0);
-  final _line = const TextStyle(backgroundColor: Colors.black12);
+  final _textColor = const TextStyle(fontSize: 14.0, color: Colors.blue);
 
   @override
   void initState() {
-    getHttp();
+    getBanner();
     getArticleData();
     super.initState();
   }
@@ -42,10 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
           new Swiper(
             ///banner
             layout: SwiperLayout.STACK,
-            itemCount: listData.length,
+            itemCount: _listData.length,
             autoplay: true,
             itemBuilder: (BuildContext context, int index) {
-              Data dataBean = listData[index];
+              Data dataBean = _listData[index];
               return new Image.network(dataBean.imagePath, fit: BoxFit.cover);
             },
             itemWidth: 400.0,
@@ -60,15 +63,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _listView() {
     return new ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        itemCount: listData.length,
+//        padding: const EdgeInsets.only(top: 16.0,left: 16.0,right: 16.0),
+        itemCount: _listArticle.length,
         itemBuilder: (context, i) {
-          return _itemBuild(listData[i]);
+          return _itemBuild(_listArticle[i]);
         });
   }
 
   /// item
-  Widget _itemBuild(Data data) {
+  Widget _itemBuild(Datas data) {
     return new ListTile(
       title: new Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,9 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {
             data.title,
             style: _biggerFont,
           ),
-          new Text(
-            data.desc,
-            style: _biggerFont,
+          new Container(
+            padding: EdgeInsets.only(top: 10.0),
+            child: new Text(data.shareUser, style: _textColor),
           ),
           new Divider(),
         ],
@@ -90,8 +93,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void getHttp() async {
-    DioUtils.postHttp(
+  void getBanner() async {
+    DioUtils.request(
       HttpUrl.BannerUrl,
       onSuccess: (data) {
         Map map = json.decode(data);
@@ -100,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
         print(list.length);
 
         setState(() {
-          listData = list;
+          _listData = list;
         });
       },
       onError: (error) {
@@ -110,17 +113,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void getArticleData() {
-    FormData formData = FormData.fromMap({'page': page});
-    DioUtils.request(HttpUrl.ArticleUrl,
-//        parameters: formData,
-        method: DioUtils.GET,
+    DioUtils.request('article/list/$page/json', method: DioUtils.GET,
         onSuccess: (data) {
-          Map map = json.decode(data);
-          ArticleModel result = ArticleModel.fromJson(map);
-          print(result.data.datas);
-        },
-        onError: (error) {
-          print(error);
-        });
+      Map map = json.decode(data);
+      ArticleModel result = ArticleModel.fromJson(map);
+      var listArticle = result.data.datas;
+      print(result.data.datas);
+      setState(() {
+        _listArticle = listArticle;
+      });
+    }, onError: (error) {
+      print(error);
+    });
   }
 }

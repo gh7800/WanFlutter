@@ -1,7 +1,10 @@
-class HttpUrl{
+class HttpUrl {
   static const BaseUrl = "https://wanandroid.com/";
 
-  static const BannerUrl = '$BaseUrl banner/json';
+  ///banner
+  static const BannerUrl = 'banner/json';
+
   ///首页文章
-  static const ArticleUrl = '$BaseUrl article/list/0/json';
+  static const ArticleUrl = 'article/list/0/json';
+
 }
