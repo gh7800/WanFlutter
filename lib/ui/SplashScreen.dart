@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wanflutter/utils/Config.dart';
 import 'package:wanflutter/utils/RouteUtil.dart';
-import 'package:wanflutter/utils/Util.dart';
+import 'package:wanflutter/utils/ImageUtil.dart';
 
 /// 闪屏页
 
@@ -31,7 +31,7 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Image.asset(
-      Util.getImgPath("splash_bg"),
+      ImageUtil.getImgPath("splash_bg"),
       height: double.infinity,
       fit: BoxFit.fill,
     );

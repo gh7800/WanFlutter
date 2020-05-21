@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:wanflutter/http/HttpUrl.dart';
 import 'package:wanflutter/model/ArticleModel.dart';
+import 'package:wanflutter/ui/login/LoginPage.dart';
+import 'package:wanflutter/utils/Config.dart';
 import 'package:wanflutter/utils/DioUtil.dart';
+import 'package:wanflutter/utils/RouteUtil.dart';
 import 'dart:convert';
 import '../../model/BannerModel.dart';
 
@@ -89,6 +92,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       onTap: () {
         print(data.title);
+        RouteUtil.goPage(context, LoginPage());
+//        RouteUtil.goPage(context, Config.LOGIN_PAGE);
       },
     );
   }
