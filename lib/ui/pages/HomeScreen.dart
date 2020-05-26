@@ -1,12 +1,9 @@
-import 'package:dio/dio.dart';
-import 'package:english_words/english_words.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:wanflutter/http/HttpUrl.dart';
 import 'package:wanflutter/model/ArticleModel.dart';
 import 'package:wanflutter/ui/login/LoginPage.dart';
-import 'package:wanflutter/utils/Config.dart';
 import 'package:wanflutter/utils/DioUtil.dart';
 import 'package:wanflutter/utils/RouteUtil.dart';
 import 'dart:convert';
