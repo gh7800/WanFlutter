@@ -9,11 +9,6 @@ class _ProjectScreenState extends State<ProjectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Center(
-          child: Text("项目"),
-        ),
-      ),
       body: Center(
         child: Text("项目"),
       ),

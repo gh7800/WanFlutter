@@ -13,7 +13,6 @@ import 'package:wanflutter/utils/HideKeybordSoft.dart';
 import 'package:wanflutter/utils/ImageUtil.dart';
 import 'package:wanflutter/utils/RouteUtil.dart';
 import 'package:wanflutter/utils/ScreentUtil.dart';
-import 'package:wanflutter/utils/SharePreferenceUtil.dart';
 import 'package:wanflutter/utils/StringRes.dart';
 import 'package:wanflutter/utils/ToastUtil.dart';
 

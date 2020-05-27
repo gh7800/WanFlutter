@@ -10,9 +10,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       routes: {Config.routeMain: (context) => new BottomNavigationWidget()},
-      title: 'Welcome to Flutter',
+      title: 'WanAndroid_Flutter',
       home: SplashScreen(),
       debugShowCheckedModeBanner: true,
+      theme: ThemeData(
+        primaryColor: Colors.redAccent
+      ),
     );
   }
 }

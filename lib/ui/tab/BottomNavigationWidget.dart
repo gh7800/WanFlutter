@@ -11,48 +11,76 @@ class BottomNavigationWidget extends StatefulWidget {
 }
 
 class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
-  final _bottomNavigationColor = Colors.blue;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  List<Widget> list = List();
+  List<String> titleList = ['首页', '项目', '体系', '广场'];
   int _currentIndex = 0;
 
-  List<Widget> list = List();
+  List<BottomNavigationBarItem> itemList = [
+    BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("首页")),
+    BottomNavigationBarItem(icon: Icon(Icons.apps), title: Text("项目")),
+    BottomNavigationBarItem(icon: Icon(Icons.dehaze), title: Text("体系")),
+    BottomNavigationBarItem(icon: Icon(Icons.crop_square), title: Text("广场"))
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //脚手架
+        key: _scaffoldKey,
+        drawer: Drawer(  //抽屉
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                decoration: ShapeDecoration(
+                  color: Colors.blue,
+                  shape: Border(
+
+                  )
+                ),
+                child: Text("text"),
+              ),
+              Text("收藏"),
+              Text("积分"),
+              Text("每日一问"),
+              Text("登录"),
+              Text("夜间"),
+            ],
+          ),
+        ),
+        appBar: AppBar(
+          title: Text(titleList[_currentIndex]),
+          centerTitle: true,
+          leading: RaisedButton(
+            child: Icon(
+              Icons.line_weight,
+              color: Colors.white,
+            ),
+            color: Colors.redAccent,
+            onPressed: () {
+              _scaffoldKey.currentState.openDrawer(); //打开左侧菜单
+            },
+          ),
+        ),
         body: list[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
-          items: [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home, color: _bottomNavigationColor),
-                title: Text("首页",
-                    style: TextStyle(
-                      color: _bottomNavigationColor,
-                    ))),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.apps, color: _bottomNavigationColor),
-                title: Text("项目",
-                    style: TextStyle(
-                      color: _bottomNavigationColor,
-                    ))),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.keyboard_hide, color: _bottomNavigationColor),
-                title: Text("体系",
-                    style: TextStyle(
-                      color: _bottomNavigationColor,
-                    ))),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.crop_square, color: _bottomNavigationColor),
-                title: Text("广场",
-                    style: TextStyle(
-                      color: _bottomNavigationColor,
-                    ))),
-          ],
+          items: itemList,
+          //item
+          unselectedItemColor: Colors.grey,
+          //未选中时的颜色
+          selectedItemColor: Colors.deepOrangeAccent,
+          //选中时的颜色
           type: BottomNavigationBarType.fixed,
+          //固定类型
+          currentIndex: _currentIndex,
+          //当前位置
           onTap: (int index) {
-            setState(() {
-              _currentIndex = index;
-            });
+            //点击事件
+            if (_currentIndex != index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            }
           },
         ));
   }

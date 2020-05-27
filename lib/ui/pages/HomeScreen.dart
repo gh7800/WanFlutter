@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:wanflutter/http/HttpUrl.dart';
 import 'package:wanflutter/model/ArticleModel.dart';
-import 'package:wanflutter/ui/login/LoginPage.dart';
+import 'package:wanflutter/ui/pages/webviewpage/WebViewPage.dart';
 import 'package:wanflutter/utils/DioUtil.dart';
 import 'package:wanflutter/utils/RouteUtil.dart';
 import 'dart:convert';
@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var page = 0;
 
   final _biggerFont = const TextStyle(fontSize: 14.0);
-  final _textColor = const TextStyle(fontSize: 14.0, color: Colors.blue);
+  final _textColor = const TextStyle(fontSize: 14.0, color: Colors.red);
 
   @override
   void initState() {
@@ -35,26 +35,26 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
         title: new Center(
           child: Text("首页"),
         ),
-      ),
-      body: new Column(
+      ),*/
+      body: Column(
         children: [
-          new Swiper(
+          Swiper(
             ///banner
             layout: SwiperLayout.STACK,
             itemCount: _listData.length,
             autoplay: true,
             itemBuilder: (BuildContext context, int index) {
               Data dataBean = _listData[index];
-              return new Image.network(dataBean.imagePath, fit: BoxFit.cover);
+              return Image.network(dataBean.imagePath, fit: BoxFit.cover);
             },
             itemWidth: 400.0,
             itemHeight: 180.0,
           ),
-          new Expanded(child: _listView())
+          Expanded(child: _listView())
 //            _listView()
         ],
       ),
@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _listView() {
-    return new ListView.builder(
+    return ListView.builder(
 //        padding: const EdgeInsets.only(top: 16.0,left: 16.0,right: 16.0),
         itemCount: _listArticle.length,
         itemBuilder: (context, i) {
@@ -72,25 +72,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
   /// item
   Widget _itemBuild(Datas data) {
-    return new ListTile(
-      title: new Column(
+    return ListTile(
+      title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          new Text(
+          Text(
             data.title,
             style: _biggerFont,
           ),
-          new Container(
+          Container(
             padding: EdgeInsets.only(top: 10.0),
             child: new Text(data.shareUser, style: _textColor),
           ),
-          new Divider(),
+          Divider(),
         ],
       ),
       onTap: () {
         print(data.title);
-        RouteUtil.goPage(context, LoginPage());
-//        RouteUtil.goPage(context, Config.LOGIN_PAGE);
+        RouteUtil.goPage(context, WebViewPage(data.link, data.title));
+//        RouteUtil.goPage(context, LoginPage());
       },
     );
   }
