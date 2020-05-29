@@ -35,29 +35,22 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
-        title: new Center(
-          child: Text("首页"),
-        ),
-      ),*/
       body: Column(
-        children: [
-          Swiper(
-            ///banner
-            layout: SwiperLayout.STACK,
-            itemCount: _listData.length,
-            autoplay: true,
-            itemBuilder: (BuildContext context, int index) {
-              Data dataBean = _listData[index];
-              return Image.network(dataBean.imagePath, fit: BoxFit.cover);
-            },
-            itemWidth: 400.0,
-            itemHeight: 180.0,
-          ),
-          Expanded(child: _listView())
+          children: [
+            Expanded(child: Swiper(
+              ///banner
+              layout: SwiperLayout.DEFAULT,
+              itemCount: _listData.length,
+              autoplay: true,
+              itemBuilder: (BuildContext context, int index) {
+                Data dataBean = _listData[index];
+                return Image.network(dataBean.imagePath, fit: BoxFit.cover);
+              },
+            ),flex: 1,),
+            Expanded(child: _listView(),flex: 2)
 //            _listView()
-        ],
-      ),
+          ],
+        ),
     );
   }
 

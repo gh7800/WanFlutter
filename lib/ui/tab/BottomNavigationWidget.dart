@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wanflutter/ui/pages/HomeScreen.dart';
 import 'package:wanflutter/ui/pages/KnowledgeScreen.dart';
 import 'package:wanflutter/ui/pages/ProjectScreen.dart';
 import 'package:wanflutter/ui/pages/SquareScreen.dart';
+import 'package:wanflutter/ui/pages/login/LoginPage.dart';
+import 'package:wanflutter/utils/RouteUtil.dart';
 
 /// 底部导航菜单
 class BottomNavigationWidget extends StatefulWidget {
@@ -23,28 +26,58 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
     BottomNavigationBarItem(icon: Icon(Icons.crop_square), title: Text("广场"))
   ];
 
+  _drawerText(String title, Widget page) {
+    return RaisedButton(
+        child: Row(
+          children: <Widget>[
+          Icon(Icons.loyalty,color: Colors.redAccent,),
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.only(left: 16),
+              child: Text(title),
+            ),
+            flex: 1,
+          ),
+          Container(child: Text("0000",style: TextStyle(color: Colors.white),),decoration: BoxDecoration(color: Colors.redAccent,shape: BoxShape.rectangle),),
+        ],),
+        onPressed: () {
+          RouteUtil.goPage(context, page);
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
-        drawer: Drawer(  //抽屉
+        drawer: Drawer(
+          //抽屉
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
               DrawerHeader(
-                decoration: ShapeDecoration(
-                  color: Colors.blue,
-                  shape: Border(
-
-                  )
-                ),
-                child: Text("text"),
-              ),
-              Text("收藏"),
-              Text("积分"),
-              Text("每日一问"),
-              Text("登录"),
-              Text("夜间"),
+                  decoration:
+                      BoxDecoration(color: Colors.redAccent),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Icons.wifi_tethering,
+                        size: 56.0,
+                        color: Colors.black,
+                      ),
+                      Text(
+                        "username",
+                        style: TextStyle(color: Colors.white, fontSize: 22),
+                      ),
+                      Container(
+                          child: Text("ID"), margin: EdgeInsets.only(top: 10)),
+                    ],
+                  )),
+              _drawerText("收藏", LoginPage()),
+              _drawerText("积分", LoginPage()),
+              _drawerText("每日一问", LoginPage()),
+              _drawerText("登录", LoginPage()),
+              _drawerText("夜间", LoginPage()),
             ],
           ),
         ),
