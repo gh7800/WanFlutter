@@ -4,8 +4,10 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:wanflutter/http/HttpUrl.dart';
 import 'package:wanflutter/model/ArticleModel.dart';
 import 'package:wanflutter/ui/pages/webviewpage/WebViewPage.dart';
+import 'package:wanflutter/utils/Dimens.dart';
 import 'package:wanflutter/utils/DioUtil.dart';
 import 'package:wanflutter/utils/RouteUtil.dart';
+import 'package:wanflutter/utils/ScreentUtil.dart';
 import 'dart:convert';
 import '../../model/BannerModel.dart';
 
@@ -17,50 +19,101 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin {
   List<Data> _listData = new List();
   List<Datas> _listArticle = new List();
   var page = 0;
+  bool _isLoading = false; //是否加载更多
+  ScrollController _scrollController = new ScrollController();
 
   final _biggerFont = const TextStyle(fontSize: 14.0);
   final _textColor = const TextStyle(fontSize: 14.0, color: Colors.red);
 
   @override
   void initState() {
+    print("initState");
+
     getBanner();
-    getArticleData();
+    getArticleData(page);
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        if (!_isLoading) {
+          _isLoading = true;
+          page++;
+          getArticleData(page);
+        }
+      }
+    });
+
     super.initState();
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+    print("dispose");
+  }
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       body: Column(
-          children: [
-            Expanded(child: Swiper(
+        children: [
+          Expanded(
+            child: Swiper(
               ///banner
               layout: SwiperLayout.DEFAULT,
+              pagination: new SwiperPagination(
+                //分页指示器
+                builder: SwiperPagination.dots,
+                alignment: Alignment.bottomRight,
+                margin: EdgeInsets.only(right: 16, bottom: 16),
+              ),
               itemCount: _listData.length,
               autoplay: true,
+              itemHeight: Dimens.dp_300,
+              itemWidth: ScreenUtil.screenWidth(context),
               itemBuilder: (BuildContext context, int index) {
                 Data dataBean = _listData[index];
                 return Image.network(dataBean.imagePath, fit: BoxFit.cover);
               },
-            ),flex: 1,),
-            Expanded(child: _listView(),flex: 2)
-//            _listView()
-          ],
-        ),
+            ),
+            flex: 1,
+          ),
+          Expanded(child: _listView(), flex: 3)
+        ],
+      ),
     );
   }
 
+  @override
+  bool get wantKeepAlive => true;
+
+  ///下拉刷新
+  Future<Null> _refresh() async {
+    page = 0;
+    await Future.delayed(Duration(seconds: 1), () {
+      getArticleData(page);
+    });
+  }
+
   Widget _listView() {
-    return ListView.builder(
-//        padding: const EdgeInsets.only(top: 16.0,left: 16.0,right: 16.0),
-        itemCount: _listArticle.length,
-        itemBuilder: (context, i) {
-          return _itemBuild(_listArticle[i]);
-        });
+    return RefreshIndicator(
+        color: Colors.blue,
+        displacement: 40, //位移
+        child: ListView.builder(
+          itemCount: _listArticle.length,
+          itemBuilder: (context, i) {
+            return _itemBuild(_listArticle[i]);
+          },
+          controller: _scrollController,
+        ),
+        onRefresh: _refresh);
   }
 
   /// item
@@ -74,16 +127,19 @@ class _HomeScreenState extends State<HomeScreen> {
             style: _biggerFont,
           ),
           Container(
-            padding: EdgeInsets.only(top: 10.0),
-            child: new Text(data.shareUser, style: _textColor),
+            padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+            child: new Text(
+                data.shareUser.isEmpty ? data.author : data.shareUser,
+                style: _textColor),
           ),
-          Divider(),
+          Divider(
+            height: 1.0,
+            color: Colors.grey,
+          ),
         ],
       ),
       onTap: () {
-        print(data.title);
         RouteUtil.goPage(context, WebViewPage(data.link, data.title));
-//        RouteUtil.goPage(context, LoginPage());
       },
     );
   }
@@ -95,7 +151,6 @@ class _HomeScreenState extends State<HomeScreen> {
         Map map = json.decode(data);
         BannerModel baseModel = BannerModel.fromJson(map);
         List<Data> list = baseModel.data;
-        print(list.length);
 
         setState(() {
           _listData = list;
@@ -107,15 +162,29 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void getArticleData() {
+  void getArticleData(int page) {
     DioUtils.request('article/list/$page/json', method: DioUtils.GET,
         onSuccess: (data) {
       Map map = json.decode(data);
       ArticleModel result = ArticleModel.fromJson(map);
       var listArticle = result.data.datas;
-      print(result.data.datas);
       setState(() {
-        _listArticle = listArticle;
+        if (_isLoading) {
+          _isLoading = false;
+        }
+
+        if (page == 0) {
+          if (_listArticle.length > 0) {
+            _listArticle.clear();
+          }
+        }
+
+        if (_listArticle.length > 0) {
+          _listArticle.addAll(listArticle);
+        } else {
+          _listArticle = listArticle;
+        }
+        print("_list---" + _listArticle.length.toString() + "");
       });
     }, onError: (error) {
       print(error);

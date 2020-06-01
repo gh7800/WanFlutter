@@ -26,11 +26,11 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
     BottomNavigationBarItem(icon: Icon(Icons.crop_square), title: Text("广场"))
   ];
 
-  _drawerText(String title, Widget page) {
+  _drawerText(String title,IconData iconData, Widget page,String integral) {
     return RaisedButton(
         child: Row(
           children: <Widget>[
-          Icon(Icons.loyalty,color: Colors.redAccent,),
+          Icon(iconData,color: Colors.redAccent,),
           Expanded(
             child: Container(
               margin: EdgeInsets.only(left: 16),
@@ -38,7 +38,7 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
             ),
             flex: 1,
           ),
-          Container(child: Text("0000",style: TextStyle(color: Colors.white),),decoration: BoxDecoration(color: Colors.redAccent,shape: BoxShape.rectangle),),
+          Container(child: Text(integral,style: TextStyle(color: Colors.black),),decoration: BoxDecoration(shape: BoxShape.rectangle),),
         ],),
         onPressed: () {
           RouteUtil.goPage(context, page);
@@ -73,11 +73,11 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
                           child: Text("ID"), margin: EdgeInsets.only(top: 10)),
                     ],
                   )),
-              _drawerText("收藏", LoginPage()),
-              _drawerText("积分", LoginPage()),
-              _drawerText("每日一问", LoginPage()),
-              _drawerText("登录", LoginPage()),
-              _drawerText("夜间", LoginPage()),
+              _drawerText("收藏",Icons.add_box, LoginPage(),""),
+              _drawerText("积分",Icons.graphic_eq, LoginPage(),"201"),
+              _drawerText("每日一问",Icons.work, LoginPage(),""),
+              _drawerText("登录",Icons.flight_takeoff, LoginPage(),""),
+              _drawerText("夜间",Icons.update, LoginPage(),""),
             ],
           ),
         ),
@@ -95,8 +95,14 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
             },
           ),
         ),
-        body: list[_currentIndex],
+        body:IndexedStack(children: <Widget>[
+          list[0],
+          list[1],
+          list[2],
+          list[3],
+        ],index: _currentIndex,),
         bottomNavigationBar: BottomNavigationBar(
+          elevation: 10.0,
           items: itemList,
           //item
           unselectedItemColor: Colors.grey,
@@ -120,11 +126,11 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
 
   @override
   void initState() {
+    super.initState();
     list
       ..add(HomeScreen())
       ..add(ProjectScreen())
       ..add(KnowledgeScreen())
       ..add(SquareScreen());
-    super.initState();
   }
 }

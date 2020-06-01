@@ -5,13 +5,18 @@ class KnowledgeScreen extends StatefulWidget {
   _KnowledgeScreenState createState() => _KnowledgeScreenState();
 }
 
-class _KnowledgeScreenState extends State<KnowledgeScreen> {
+class _KnowledgeScreenState extends State<KnowledgeScreen>with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       body: Center(
         child: Text("体系"),
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
