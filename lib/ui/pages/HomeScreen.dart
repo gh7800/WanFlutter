@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -8,6 +10,7 @@ import 'package:wanflutter/utils/Dimens.dart';
 import 'package:wanflutter/utils/DioUtil.dart';
 import 'package:wanflutter/utils/RouteUtil.dart';
 import 'package:wanflutter/utils/ScreentUtil.dart';
+import 'package:wanflutter/widget/LoadingWidget.dart';
 import 'dart:convert';
 import '../../model/BannerModel.dart';
 
@@ -19,12 +22,14 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin{
+class _HomeScreenState extends State<HomeScreen>
+    with AutomaticKeepAliveClientMixin {
   List<Data> _listData = new List();
   List<Datas> _listArticle = new List();
   var page = 0;
   bool _isLoading = false; //是否加载更多
   ScrollController _scrollController = new ScrollController();
+  Timer _timer;
 
   final _biggerFont = const TextStyle(fontSize: 14.0);
   final _textColor = const TextStyle(fontSize: 14.0, color: Colors.red);
@@ -63,30 +68,34 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
 
     return Scaffold(
       body: Column(
-        children: [
-          Expanded(
-            child: Swiper(
-              ///banner
-              layout: SwiperLayout.DEFAULT,
-              pagination: new SwiperPagination(
-                //分页指示器
-                builder: SwiperPagination.dots,
-                alignment: Alignment.bottomRight,
-                margin: EdgeInsets.only(right: 16, bottom: 16),
-              ),
-              itemCount: _listData.length,
-              autoplay: true,
-              itemHeight: Dimens.dp_300,
-              itemWidth: ScreenUtil.screenWidth(context),
-              itemBuilder: (BuildContext context, int index) {
-                Data dataBean = _listData[index];
-                return Image.network(dataBean.imagePath, fit: BoxFit.cover);
-              },
-            ),
-            flex: 1,
-          ),
-          Expanded(child: _listView(), flex: 3)
-        ],
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: _listData.length == 0
+            ? [LoadingWidget()]
+            : [
+                Expanded(
+                  child: Swiper(
+                    ///banner
+                    layout: SwiperLayout.DEFAULT,
+                    pagination: new SwiperPagination(
+                      //分页指示器
+                      builder: SwiperPagination.dots,
+                      alignment: Alignment.bottomRight,
+                      margin: EdgeInsets.only(right: 16, bottom: 16),
+                    ),
+                    itemCount: _listData.length,
+                    autoplay: true,
+                    itemHeight: Dimens.dp_300,
+                    itemWidth: ScreenUtil.screenWidth(context),
+                    itemBuilder: (BuildContext context, int index) {
+                      Data dataBean = _listData[index];
+                      return Image.network(dataBean.imagePath,
+                          fit: BoxFit.cover);
+                    },
+                  ),
+                  flex: 1,
+                ),
+                Expanded(child: _listView(), flex: 3)
+              ],
       ),
     );
   }
@@ -149,8 +158,11 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
         BannerModel baseModel = BannerModel.fromJson(map);
         List<Data> list = baseModel.data;
 
-        setState(() {
-          _listData = list;
+        _timer = Timer(Duration(seconds: 2), () {
+          _timer.cancel();
+          setState(() {
+            _listData = list;
+          });
         });
       },
       onError: (error) {
@@ -187,7 +199,6 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
       print(error);
     });
   }
-
 
   @override
   bool get wantKeepAlive => true;
