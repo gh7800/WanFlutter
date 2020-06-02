@@ -7,9 +7,15 @@ class ProjectScreen extends StatefulWidget {
 
 class _ProjectScreenState extends State<ProjectScreen> with AutomaticKeepAliveClientMixin{
   @override
+  void initState() {
+    print('init2');
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     super.build(context);
 
+    print("build2");
     return Scaffold(
       body: Center(
         child: Text("项目"),

@@ -7,6 +7,11 @@ class KnowledgeScreen extends StatefulWidget {
 
 class _KnowledgeScreenState extends State<KnowledgeScreen>with AutomaticKeepAliveClientMixin {
   @override
+  void initState() {
+    print('init3');
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     super.build(context);
 

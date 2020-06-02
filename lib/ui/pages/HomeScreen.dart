@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin {
+class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin{
   List<Data> _listData = new List();
   List<Datas> _listArticle = new List();
   var page = 0;
@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
 
   @override
   void initState() {
-    print("initState");
+    print("init1");
 
     getBanner();
     getArticleData(page);
@@ -90,9 +90,6 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 
   ///下拉刷新
   Future<Null> _refresh() async {
@@ -190,4 +187,8 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
       print(error);
     });
   }
+
+
+  @override
+  bool get wantKeepAlive => true;
 }

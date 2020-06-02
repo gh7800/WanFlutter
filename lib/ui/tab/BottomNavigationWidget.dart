@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wanflutter/ui/pages/HomeScreen.dart';
 import 'package:wanflutter/ui/pages/KnowledgeScreen.dart';
@@ -13,11 +12,17 @@ class BottomNavigationWidget extends StatefulWidget {
   _BottomNavigationWidgetState createState() => _BottomNavigationWidgetState();
 }
 
-class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
+class _BottomNavigationWidgetState extends State<BottomNavigationWidget> with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  List<Widget> list = List();
+  List<Widget> _children = [
+    HomeScreen(),
+    ProjectScreen(),
+    KnowledgeScreen(),
+    SquareScreen()
+  ];
   List<String> titleList = ['首页', '项目', '体系', '广场'];
   int _currentIndex = 0;
+  TabController _controller;
 
   List<BottomNavigationBarItem> itemList = [
     BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("首页")),
@@ -26,23 +31,39 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
     BottomNavigationBarItem(icon: Icon(Icons.crop_square), title: Text("广场"))
   ];
 
-  _drawerText(String title,IconData iconData, Widget page,String integral) {
+  _drawerText(String title, IconData iconData, Widget page, String integral) {
     return RaisedButton(
         child: Row(
           children: <Widget>[
-          Icon(iconData,color: Colors.redAccent,),
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.only(left: 16),
-              child: Text(title),
+            Icon(
+              iconData,
+              color: Colors.redAccent,
             ),
-            flex: 1,
-          ),
-          Container(child: Text(integral,style: TextStyle(color: Colors.black),),decoration: BoxDecoration(shape: BoxShape.rectangle),),
-        ],),
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.only(left: 16),
+                child: Text(title),
+              ),
+              flex: 1,
+            ),
+            Container(
+              child: Text(
+                integral,
+                style: TextStyle(color: Colors.black),
+              ),
+              decoration: BoxDecoration(shape: BoxShape.rectangle),
+            ),
+          ],
+        ),
         onPressed: () {
           RouteUtil.goPage(context, page);
         });
+  }
+
+  @override
+  void initState() {
+    _controller = TabController(vsync: this,length: _children.length);
+    super.initState();
   }
 
   @override
@@ -55,8 +76,7 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               DrawerHeader(
-                  decoration:
-                      BoxDecoration(color: Colors.redAccent),
+                  decoration: BoxDecoration(color: Colors.redAccent),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -73,11 +93,11 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
                           child: Text("ID"), margin: EdgeInsets.only(top: 10)),
                     ],
                   )),
-              _drawerText("收藏",Icons.add_box, LoginPage(),""),
-              _drawerText("积分",Icons.graphic_eq, LoginPage(),"201"),
-              _drawerText("每日一问",Icons.work, LoginPage(),""),
-              _drawerText("登录",Icons.flight_takeoff, LoginPage(),""),
-              _drawerText("夜间",Icons.update, LoginPage(),""),
+              _drawerText("收藏", Icons.add_box, LoginPage(), ""),
+              _drawerText("积分", Icons.graphic_eq, LoginPage(), "201"),
+              _drawerText("每日一问", Icons.work, LoginPage(), ""),
+              _drawerText("登录", Icons.flight_takeoff, LoginPage(), ""),
+              _drawerText("夜间", Icons.update, LoginPage(), ""),
             ],
           ),
         ),
@@ -95,42 +115,40 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
             },
           ),
         ),
-        body:IndexedStack(children: <Widget>[
-          list[0],
-          list[1],
-          list[2],
-          list[3],
-        ],index: _currentIndex,),
+//        body: _children[_currentIndex],
+        body: TabBarView(
+//          index: _currentIndex,
+          children: _children,
+          physics: NeverScrollableScrollPhysics(),
+          controller: _controller,
+        ),
         bottomNavigationBar: BottomNavigationBar(
           elevation: 10.0,
-          items: itemList,
           //item
-          unselectedItemColor: Colors.grey,
+          items: itemList,
           //未选中时的颜色
-          selectedItemColor: Colors.deepOrangeAccent,
+          unselectedItemColor: Colors.grey,
           //选中时的颜色
-          type: BottomNavigationBarType.fixed,
+          selectedItemColor: Colors.deepOrangeAccent,
           //固定类型
-          currentIndex: _currentIndex,
+          type: BottomNavigationBarType.fixed,
           //当前位置
+          currentIndex: _currentIndex,
+          //点击事件
           onTap: (int index) {
-            //点击事件
             if (_currentIndex != index) {
               setState(() {
                 _currentIndex = index;
               });
+              _controller.animateTo(index);
             }
           },
         ));
   }
 
   @override
-  void initState() {
-    super.initState();
-    list
-      ..add(HomeScreen())
-      ..add(ProjectScreen())
-      ..add(KnowledgeScreen())
-      ..add(SquareScreen());
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
   }
 }
