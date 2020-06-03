@@ -12,7 +12,8 @@ class BottomNavigationWidget extends StatefulWidget {
   _BottomNavigationWidgetState createState() => _BottomNavigationWidgetState();
 }
 
-class _BottomNavigationWidgetState extends State<BottomNavigationWidget> with SingleTickerProviderStateMixin {
+class _BottomNavigationWidgetState extends State<BottomNavigationWidget>
+    with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<Widget> _children = [
     HomeScreen(),
@@ -62,88 +63,96 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> with Si
 
   @override
   void initState() {
-    _controller = TabController(vsync: this,length: _children.length);
+    _controller = TabController(vsync: this, length: _children.length);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldKey,
-        drawer: Drawer(
-          //抽屉
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              DrawerHeader(
-                  decoration: BoxDecoration(color: Colors.redAccent),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(
-                        Icons.wifi_tethering,
-                        size: 56.0,
-                        color: Colors.black,
-                      ),
-                      Text(
-                        "username",
-                        style: TextStyle(color: Colors.white, fontSize: 22),
-                      ),
-                      Container(
-                          child: Text("ID"), margin: EdgeInsets.only(top: 10)),
-                    ],
-                  )),
-              _drawerText("收藏", Icons.add_box, LoginPage(), ""),
-              _drawerText("积分", Icons.graphic_eq, LoginPage(), "201"),
-              _drawerText("每日一问", Icons.work, LoginPage(), ""),
-              _drawerText("登录", Icons.flight_takeoff, LoginPage(), ""),
-              _drawerText("夜间", Icons.update, LoginPage(), ""),
-            ],
+      key: _scaffoldKey,
+      drawer: Drawer(
+        //抽屉
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+                decoration: BoxDecoration(color: Colors.redAccent),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.wifi_tethering,
+                      size: 56.0,
+                      color: Colors.black,
+                    ),
+                    Text(
+                      "username",
+                      style: TextStyle(color: Colors.white, fontSize: 22),
+                    ),
+                    Container(
+                        child: Text("ID"), margin: EdgeInsets.only(top: 10)),
+                  ],
+                )),
+            _drawerText("收藏", Icons.add_box, LoginPage(), ""),
+            _drawerText("积分", Icons.graphic_eq, LoginPage(), "201"),
+            _drawerText("每日一问", Icons.work, LoginPage(), ""),
+            _drawerText("登录", Icons.flight_takeoff, LoginPage(), ""),
+            _drawerText("夜间", Icons.update, LoginPage(), ""),
+          ],
+        ),
+      ),
+      appBar: AppBar(
+        title: Text(titleList[_currentIndex]),
+        centerTitle: true,
+        leading: RaisedButton(
+          child: Icon(
+            Icons.line_weight,
+            color: Colors.white,
           ),
-        ),
-        appBar: AppBar(
-          title: Text(titleList[_currentIndex]),
-          centerTitle: true,
-          leading: RaisedButton(
-            child: Icon(
-              Icons.line_weight,
-              color: Colors.white,
-            ),
-            color: Colors.redAccent,
-            onPressed: () {
-              _scaffoldKey.currentState.openDrawer(); //打开左侧菜单
-            },
-          ),
-        ),
-//        body: _children[_currentIndex],
-        body: TabBarView(
-//          index: _currentIndex,
-          children: _children,
-          physics: NeverScrollableScrollPhysics(),
-          controller: _controller,
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          elevation: 10.0,
-          //item
-          items: itemList,
-          //未选中时的颜色
-          unselectedItemColor: Colors.grey,
-          //选中时的颜色
-          selectedItemColor: Colors.deepOrangeAccent,
-          //固定类型
-          type: BottomNavigationBarType.fixed,
-          //当前位置
-          currentIndex: _currentIndex,
-          //点击事件
-          onTap: (int index) {
-            if (_currentIndex != index) {
-              setState(() {
-                _currentIndex = index;
-              });
-              _controller.animateTo(index);
-            }
+          color: Colors.redAccent,
+          onPressed: () {
+            _scaffoldKey.currentState.openDrawer(); //打开左侧菜单
           },
-        ));
+        ),
+      ),
+//        body: _children[_currentIndex],
+      body: TabBarView(
+//          index: _currentIndex,
+        children: _children,
+        physics: NeverScrollableScrollPhysics(),
+        controller: _controller,
+      ),
+//      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.redAccent,
+        elevation: 1.0,
+        child: Icon(Icons.add,color: Colors.white),
+        onPressed: () {},
+
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        //item
+        items: itemList,
+        //未选中时的颜色
+        unselectedItemColor: Colors.grey,
+        //选中时的颜色
+        selectedItemColor: Colors.deepOrangeAccent,
+        //固定类型
+        type: BottomNavigationBarType.fixed,
+        //当前位置
+        currentIndex: _currentIndex,
+        //点击事件
+        onTap: (int index) {
+          if (_currentIndex != index) {
+            setState(() {
+              _currentIndex = index;
+            });
+            _controller.animateTo(index);
+          }
+        },
+      ),
+    );
   }
 
   @override

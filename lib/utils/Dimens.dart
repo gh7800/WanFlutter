@@ -17,6 +17,8 @@ class Dimens {
   static const double dp_88 = 88.0;
   static const double dp_96 = 96.0;
 
+  static const double dp_100 = 100.0;
+  static const double dp_200 = 200.0;
   static const double dp_300 = 300.0;
   static const double dp_400 = 400.0;
 }

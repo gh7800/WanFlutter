@@ -13,6 +13,10 @@ class WebViewPage extends StatelessWidget {
     print('url--$url');
   }
 
+  _onPageFinished(String url){
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +28,7 @@ class WebViewPage extends StatelessWidget {
         child: WebView(
           initialUrl: url,
           javascriptMode: JavascriptMode.unrestricted,
+          onPageFinished: _onPageFinished,
         ),
       ),
     );

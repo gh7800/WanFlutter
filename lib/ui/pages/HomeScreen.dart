@@ -10,6 +10,7 @@ import 'package:wanflutter/utils/Dimens.dart';
 import 'package:wanflutter/utils/DioUtil.dart';
 import 'package:wanflutter/utils/RouteUtil.dart';
 import 'package:wanflutter/utils/ScreentUtil.dart';
+import 'package:wanflutter/utils/StringUtil.dart';
 import 'package:wanflutter/widget/LoadingWidget.dart';
 import 'dart:convert';
 import '../../model/BannerModel.dart';
@@ -68,7 +69,6 @@ class _HomeScreenState extends State<HomeScreen>
 
     return Scaffold(
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: _listData.length == 0
             ? [LoadingWidget()]
             : [
@@ -94,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen>
                   ),
                   flex: 1,
                 ),
-                Expanded(child: _listView(), flex: 3)
+                Expanded(child: _listView(), flex: 2)
               ],
       ),
     );
@@ -129,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            data.title,
+            StringUtil.replaceHtmlTag(data.title),
             style: _biggerFont,
           ),
           Container(
