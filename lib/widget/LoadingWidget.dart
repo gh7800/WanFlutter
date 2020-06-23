@@ -6,7 +6,7 @@ class LoadingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      height: double.maxFinite,
+      height: 500.0,
       child: SizedBox(
         width: Dimens.dp_25,
         height: Dimens.dp_25,
