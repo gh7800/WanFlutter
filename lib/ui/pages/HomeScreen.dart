@@ -68,34 +68,38 @@ class _HomeScreenState extends State<HomeScreen>
     super.build(context);
 
     return Scaffold(
-      body: Column(
-        children: _listData.length == 0
-            ? [LoadingWidget()]
-            : [
-                Expanded(
-                  child: Swiper(
-                    ///banner
-                    layout: SwiperLayout.DEFAULT,
-                    pagination: new SwiperPagination(
-                      //分页指示器
-                      builder: SwiperPagination.dots,
-                      alignment: Alignment.bottomRight,
-                      margin: EdgeInsets.only(right: 16, bottom: 16),
+      body: Container(
+        child: _listData.length == 0
+            ? Container(
+                child: LoadingWidget(),
+              )
+            : Column(
+                children: [
+                  Expanded(
+                    child: Swiper(
+                      ///banner
+                      layout: SwiperLayout.DEFAULT,
+                      pagination: new SwiperPagination(
+                        //分页指示器
+                        builder: SwiperPagination.dots,
+                        alignment: Alignment.bottomRight,
+                        margin: EdgeInsets.only(right: 16, bottom: 16),
+                      ),
+                      itemCount: _listData.length,
+                      autoplay: true,
+                      itemHeight: Dimens.dp_300,
+                      itemWidth: ScreenUtil.screenWidth(context),
+                      itemBuilder: (BuildContext context, int index) {
+                        Data dataBean = _listData[index];
+                        return Image.network(dataBean.imagePath,
+                            fit: BoxFit.cover);
+                      },
                     ),
-                    itemCount: _listData.length,
-                    autoplay: true,
-                    itemHeight: Dimens.dp_300,
-                    itemWidth: ScreenUtil.screenWidth(context),
-                    itemBuilder: (BuildContext context, int index) {
-                      Data dataBean = _listData[index];
-                      return Image.network(dataBean.imagePath,
-                          fit: BoxFit.cover);
-                    },
+                    flex: 1,
                   ),
-                  flex: 1,
-                ),
-                Expanded(child: _listView(), flex: 2)
-              ],
+                  Expanded(child: _listView(), flex: 2)
+                ],
+              ),
       ),
     );
   }

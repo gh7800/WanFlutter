@@ -4,13 +4,20 @@ import 'package:wanflutter/utils/Dimens.dart';
 ///loading圆圈
 class LoadingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      height: 500.0,
+    /*return Center(
+      child: Container(
+        width: Dimens.dp_30,
+        height: Dimens.dp_30,
+        child: SizedBox(
+          child: CircularProgressIndicator(strokeWidth: Dimens.dp_3),
+        ),
+      ),
+    );*/
+    return Center(
       child: SizedBox(
-        width: Dimens.dp_25,
-        height: Dimens.dp_25,
-        child: CircularProgressIndicator(strokeWidth: 2),
+        width: Dimens.dp_30,
+        height: Dimens.dp_30,
+        child: CircularProgressIndicator(strokeWidth: Dimens.dp_3),
       ),
     );
   }
